@@ -22,6 +22,7 @@ import {LoginScreen} from './src/screens';
 import AuthNavigator from './src/navigator/AuthNavigator';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import OnboardingScreen from './src/screens/author/OnboardScreen';
 
 function App(): React.JSX.Element {
   const [isShowSplash, setIsShowSplash] = useState<boolean>(true)
@@ -29,7 +30,7 @@ function App(): React.JSX.Element {
   useEffect(() => {
     setTimeout(() => {
       setIsShowSplash(false)
-    }, 3000)
+    }, 1500)
   })
 
   const Stack = createNativeStackNavigator();  
@@ -45,7 +46,10 @@ function App(): React.JSX.Element {
           //   <AuthNavigator />
           // </NavigationContainer>
 
-          <LoginScreen />
+          // <LoginScreen />
+          <NavigationContainer>
+            <OnboardingScreen/ >
+          </NavigationContainer>
 
         //   <NavigationContainer>
         //   <Stack.Navigator initialRouteName='Login' screenOptions={{headerShown: false}}>
