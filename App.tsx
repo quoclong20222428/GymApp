@@ -8,21 +8,17 @@
 import React, { useEffect, useState } from 'react';
 import {
   StatusBar,
-  StyleSheet,
-  Text,
-  View
+  StyleSheet
 } from 'react-native';
 
 import { enableScreens } from 'react-native-screens';
 enableScreens();
 
-
-import { SplashScreen } from './src/screens';
-import {LoginScreen} from './src/screens';
-import AuthNavigator from './src/navigator/AuthNavigator';
-import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import OnboardingScreen from './src/screens/author/OnboardScreen';
+import { Provider } from 'react-redux';
+import AuthNavigator from './src/navigator/AuthNavigator';
+import store from './src/redux/store';
+import { SplashScreen } from './src/screens';
 
 function App(): React.JSX.Element {
   const [isShowSplash, setIsShowSplash] = useState<boolean>(true)
@@ -30,35 +26,23 @@ function App(): React.JSX.Element {
   useEffect(() => {
     setTimeout(() => {
       setIsShowSplash(false)
-    }, 1500)
+    }, 3000)
   })
 
-  const Stack = createNativeStackNavigator();  
-  
+  const Stack = createNativeStackNavigator();
   return (
-    // <>
-      // <StatusBar barStyle="dark-content" backgroundColor="transparent" translucent />
-      // {
-        isShowSplash ? (
-          <SplashScreen />
-        ) : (
-          // <NavigationContainer>
-          //   <AuthNavigator />
-          // </NavigationContainer>
+    <Provider store={store}>
+      <StatusBar
+        barStyle="dark-content"
+        backgroundColor="transparent"
+        translucent />
 
-          // <LoginScreen />
-          <NavigationContainer>
-            <OnboardingScreen/ >
-          </NavigationContainer>
-
-        //   <NavigationContainer>
-        //   <Stack.Navigator initialRouteName='Login' screenOptions={{headerShown: false}}>
-        //     <Stack.Screen name='Login' component={LoginScreen} />
-        //   </Stack.Navigator>
-        // </NavigationContainer>
-        )
-      // }
-    // </>
+      
+      {isShowSplash ? <SplashScreen /> :
+        <AuthNavigator />
+        
+      }
+    </Provider>
   );
 }
 

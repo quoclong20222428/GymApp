@@ -1,13 +1,23 @@
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
+/**
+ * Sample React Native App
+ * https://github.com/facebook/react-native
+ *
+ * @format
+ */
+
+import { NavigationProp, useNavigation } from '@react-navigation/native';
 import React, { useState } from 'react';
-import { Dimensions, Image, SafeAreaView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import {
+    Dimensions,
+    Image,
+    SafeAreaView,
+    StyleSheet,
+    Text,
+    TouchableOpacity,
+    View
+} from 'react-native';
 import Swiper from 'react-native-swiper';
 
-import LoginScreen from './LoginScreen';
-import { NavigationProp, useNavigation } from '@react-navigation/native';
-import AuthNavigator from '../../navigator/AuthNavigator';
-
-// Define your available routes in this stack
 type RootStackParamList = {
     LoginScreen: undefined; // Home screen doesn’t expect any parameters
     // Add other screens if needed
@@ -33,21 +43,21 @@ const slides = [
     },
 ];
 
-function OnboardingScreen(): React.JSX.Element {
+export default function OnboardScreen(): React.JSX.Element {
     const navigation = useNavigation<NavigationProp<RootStackParamList>>();
 
     const [currentIndex, setCurrentIndex] = useState<number>(0);
 
+    const handleToLoginScreen = () => {
+        navigation.navigate('LoginScreen');
+    }
     // Function to handle Next/Start button press
     const handleNextPress = () => {
         if (currentIndex < 2) {
             setCurrentIndex(currentIndex + 1) // Go to the next slide
-        } else  if (currentIndex === 2){
+        } else if (currentIndex === 2) {
             setCurrentIndex(2)
-            // navigation.navigate('LoginScreen');
-            // return (
-            //     <AuthNavigator />
-            // )
+            handleToLoginScreen()
         }
     };
 
@@ -55,13 +65,15 @@ function OnboardingScreen(): React.JSX.Element {
         <SafeAreaView style={styles.container}>
             <Image source={require('../../image/Vector.png')} style={styles.imageVector} resizeMode='cover' />
             <Swiper
-                loop={false} //Keo qua -> true
+                loop={false} //Keo quay ve 1 -> true
                 dotStyle={styles.dot}
                 activeDotStyle={styles.activeDot}
                 dotColor="#ccc"
                 activeDotColor="#8b5cf6"
                 style={styles.swiper}
+                
                 onIndexChanged={(index) => setCurrentIndex(index)}
+                index={currentIndex}
             >
                 {slides.map((slide, index) => (
                     <View key={slide.id} style={styles.slide}>
@@ -72,9 +84,7 @@ function OnboardingScreen(): React.JSX.Element {
             </Swiper>
             <View style={styles.buttonContainer}>
                 <View>
-                    <TouchableOpacity
-                    // onPress={() => navigation.navigate('Home')}
-                    >
+                    <TouchableOpacity onPress={handleToLoginScreen}>
                         <Text style={styles.skipText}>Skip</Text>
                     </TouchableOpacity>
                 </View>
@@ -89,6 +99,7 @@ function OnboardingScreen(): React.JSX.Element {
                     {/* <Text>{currentIndex}</Text>  */}
                 </TouchableOpacity>
             </View>
+
         </SafeAreaView>
     );
 }
@@ -166,5 +177,3 @@ const styles = StyleSheet.create({
         width: '100%',
     },
 });
-
-export default OnboardingScreen;
