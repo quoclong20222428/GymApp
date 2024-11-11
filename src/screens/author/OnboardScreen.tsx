@@ -71,7 +71,13 @@ export default function OnboardScreen(): React.JSX.Element {
                 dotColor="#ccc"
                 activeDotColor="#8b5cf6"
                 style={styles.swiper}
-                
+                showsButtons={true}
+                nextButton={
+                    <View style={styles.button2}>
+                        <Image source={require('../../image/ArrowRight.png')} style={styles.ArrowRight} resizeMode='contain' />
+                    </View>
+                }
+                prevButton={<Text></Text>}
                 onIndexChanged={(index) => setCurrentIndex(index)}
                 index={currentIndex}
             >
@@ -82,21 +88,15 @@ export default function OnboardScreen(): React.JSX.Element {
                     </View>
                 ))}
             </Swiper>
-            <View style={styles.buttonContainer}>
-                <View>
-                    <TouchableOpacity onPress={handleToLoginScreen}>
-                        <Text style={styles.skipText}>Skip</Text>
-                    </TouchableOpacity>
-                </View>
-
+            {
+                currentIndex === 2 &&
                 <TouchableOpacity style={styles.button} onPress={handleNextPress}>
-                    {
-                        currentIndex !== 2 ?
-                            <Image source={require('../../image/ArrowRight.png')} style={styles.ArrowRight} resizeMode='contain' />
-                            :
-                            <Text style={styles.nextButtonText}>Start</Text>
-                    }
-                    {/* <Text>{currentIndex}</Text>  */}
+                    <Text style={styles.nextButtonText}>Start</Text>
+                </TouchableOpacity>
+            }
+            <View>
+                <TouchableOpacity style={styles.skipButtom} onPress={handleToLoginScreen}>
+                    <Text style={styles.skipText}>Skip</Text>
                 </TouchableOpacity>
             </View>
 
@@ -134,13 +134,13 @@ const styles = StyleSheet.create({
         width: 8,
         height: 8,
         borderRadius: 4,
-        marginBottom: 200,  // Moves dots higher up
+        marginBottom: 300,  // Moves dots higher up
     },
     activeDot: {
         width: 8,
         height: 8,
         borderRadius: 4,
-        marginBottom: 200,
+        marginBottom: 300,
     },
     buttonContainer: {
         width: '100%',
@@ -156,17 +156,36 @@ const styles = StyleSheet.create({
         borderRadius: 32,
         alignItems: 'center',
         justifyContent: 'center',
-        marginRight: -250,
+        position: 'absolute',
+        bottom: 29,
+        right: 50,
+    },
+    button2: {
+        backgroundColor: '#8b5cf6',
+        width: 65,
+        height: 65,
+        borderRadius: 32,
+        alignItems: 'center',
+        justifyContent: 'center',
+        position: 'absolute',
+        top: 81,
+        right: 40,
     },
     nextButtonText: {
         fontSize: 16,
         color: '#FFFFFF',
         fontWeight: 'bold',
     },
+    skipButtom: {
+        width: 35,
+        marginRight: 38,
+        position: 'absolute',
+        bottom: 50,
+        left: -130,
+    },
     skipText: {
         fontSize: 16,
         color: '#aaa',
-        marginLeft: -250,
     },
     ArrowRight: {
         width: 24,
