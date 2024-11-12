@@ -91,7 +91,7 @@ export default function OnboardScreen(): React.JSX.Element {
             {
                 currentIndex === 2 &&
                 <TouchableOpacity style={styles.button} onPress={handleNextPress}>
-                    <Text style={styles.nextButtonText}>Start</Text>
+                    <Text style={styles.nextButtonText}>Get Started</Text>
                 </TouchableOpacity>
             }
             <View>
@@ -150,25 +150,25 @@ const styles = StyleSheet.create({
         paddingBottom: 30,
     },
     button: {
-        backgroundColor: '#8b5cf6',
-        width: 65,
-        height: 65,
+        backgroundColor: '#92A3FD',
+        width: 166,
+        height: 55,
         borderRadius: 32,
         alignItems: 'center',
         justifyContent: 'center',
         position: 'absolute',
-        bottom: 29,
-        right: 50,
+        bottom: 45,
+        right: 20,
     },
     button2: {
-        backgroundColor: '#8b5cf6',
-        width: 65,
-        height: 65,
-        borderRadius: 32,
+        backgroundColor: '#92A3FD',
+        width: 54,
+        height: 55,
+        borderRadius: 55/2,
         alignItems: 'center',
         justifyContent: 'center',
         position: 'absolute',
-        top: 81,
+        top: 71,
         right: 40,
     },
     nextButtonText: {
@@ -180,7 +180,7 @@ const styles = StyleSheet.create({
         width: 35,
         marginRight: 38,
         position: 'absolute',
-        bottom: 50,
+        bottom: 64,
         left: -130,
     },
     skipText: {

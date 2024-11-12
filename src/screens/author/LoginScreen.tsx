@@ -5,14 +5,20 @@
  * @format
  */
 
+// Define your available routes in this stack
+// type RootStackParamList = {
+//   SignInScreen: undefined;
+//   // Add other screens if needed
+// };
+
 import React from 'react';
 import {
-    Image,
-    SafeAreaView,
-    StyleSheet,
-    Text,
-    TouchableOpacity,
-    View
+  Image,
+  SafeAreaView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View
 } from 'react-native';
 
 
@@ -20,7 +26,14 @@ import BtnColor from './BtnColor';
 import BtnNormal from './BtnNormal';
 import BtnSocial from './BtnSocial';
 
-export default function LoginScreen(): React.JSX.Element {
+export default function LoginScreen(navigation: any): React.JSX.Element {
+  // const navigation = useNavigation<NavigationProp<RootStackParamList>>();
+
+  const handleSignIn = () => {
+    navigation.navigate('SignInScreen')
+  }
+
+  
   return (
     <SafeAreaView style={styles.container}>
       <View>
@@ -54,12 +67,12 @@ export default function LoginScreen(): React.JSX.Element {
         </View>
 
         <View style={styles.btnView}>
-          <BtnColor name={'Sign In'} />
+          <BtnColor name={'Sign Up'} />
         </View>
 
         <View>
-          <TouchableOpacity style={styles.btnView}>
-            <BtnNormal name={'Sign Up'} />
+          <TouchableOpacity style={styles.btnView} onPress={() => {handleSignIn}}>
+            <BtnNormal name={'Login'} />
           </TouchableOpacity>
         </View>
 

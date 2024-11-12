@@ -13,6 +13,7 @@ import {
 } from 'react-native';
 import OnboardScreen from '../screens/author/OnboardScreen';
 import LoginScreen from '../screens/author/LoginScreen';
+import SignInScreen from '../screens/author/SignInScreen';
 
 function AuthNavigator(): React.JSX.Element {
     const Stack = createNativeStackNavigator();
@@ -24,6 +25,7 @@ function AuthNavigator(): React.JSX.Element {
             }}>
             <Stack.Screen name="OnboardScreen" component={OnboardScreen} />
             <Stack.Screen name='LoginScreen' component={LoginScreen} />
+            <Stack.Screen name='SignInScreen' component={SignInScreen} />
           </Stack.Navigator>
         </NavigationContainer>
     );
