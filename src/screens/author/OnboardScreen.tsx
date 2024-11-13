@@ -164,7 +164,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#92A3FD',
         width: 54,
         height: 55,
-        borderRadius: 55/2,
+        borderRadius: 55 / 2,
         alignItems: 'center',
         justifyContent: 'center',
         position: 'absolute',
@@ -175,6 +175,7 @@ const styles = StyleSheet.create({
         fontSize: 16,
         color: '#FFFFFF',
         fontWeight: 'bold',
+        height: 23,
     },
     skipButtom: {
         width: 35,

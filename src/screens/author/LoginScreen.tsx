@@ -8,6 +8,7 @@
 // Define your available routes in this stack
 type RootStackParamList = {
   SignInScreen: undefined;
+  SignUpScreen: undefined;
   // Add other screens if needed
 };
 
@@ -22,10 +23,10 @@ import {
 } from 'react-native';
 
 
+import { NavigationProp, useNavigation } from '@react-navigation/native';
 import BtnColor from './BtnColor';
 import BtnNormal from './BtnNormal';
 import BtnSocial from './BtnSocial';
-import { NavigationProp, useNavigation } from '@react-navigation/native';
 
 export default function LoginScreen(): React.JSX.Element {
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
@@ -34,6 +35,9 @@ export default function LoginScreen(): React.JSX.Element {
     navigation.navigate('SignInScreen')
   }
 
+  const handleSignUp = () => {
+    navigation.navigate('SignUpScreen')
+  }
 
   return (
     <SafeAreaView style={styles.container}>
@@ -67,7 +71,7 @@ export default function LoginScreen(): React.JSX.Element {
           <BtnSocial name={'Github'} iconName={'Github'} />
         </View>
 
-        <TouchableOpacity style={styles.btnView}>
+        <TouchableOpacity style={styles.btnView} onPress={handleSignUp}>
           <BtnColor name={'Sign Up'} />
         </TouchableOpacity>
 

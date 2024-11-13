@@ -6,8 +6,9 @@
  */
 
 import Checkbox from 'expo-checkbox';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
+  Dimensions,
   Image,
   Keyboard,
   StyleSheet,
@@ -18,10 +19,11 @@ import {
   View
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import LoadingScreen from '../LoadingScreen';
 import BtnColor from './BtnColor';
-import { NavigationProp, useNavigation } from '@react-navigation/native';
-import { Icon } from '@expo/vector-icons/build/createIconSet';
-import { Ionicons } from '@expo/vector-icons';
+
+const windowWidth = Dimensions.get('window').width;
+const windowHeight = Dimensions.get('window').height;
 
 export default function SignInScreen(props: any): React.JSX.Element {
   const [email, setEmail] = useState<string>('')
@@ -31,6 +33,7 @@ export default function SignInScreen(props: any): React.JSX.Element {
   const [checkPass, setCheckPass] = useState<boolean>(false)
   const [isHidePass, setIsHidePass] = useState<boolean>(true)
   const [isRemembered, setIsRemembered] = useState<boolean>(false)
+  const [isLoading, setIsLoading] = useState<boolean>(false)
 
   const { navigation } = props
   const checkFormat = () => {
@@ -52,10 +55,17 @@ export default function SignInScreen(props: any): React.JSX.Element {
 
     return result
   }
+  useEffect(() => {
+    setTimeout(() => {
+      setIsLoading(false)
+    }, 10000)
+  })
 
   const toHomeScreen = (check: boolean) => {
     // if (check) navigation.navigate('Home')
+    if (check) setIsLoading(true)
   }
+
 
   const handleLogin = () => {
     if (checkFormat()) {
@@ -116,6 +126,7 @@ export default function SignInScreen(props: any): React.JSX.Element {
               </TouchableOpacity>
             </View>
           </View>
+
           <View style={styles.handleExcept}>
             <View style={{ flexDirection: 'row' }}>
               <Checkbox
@@ -159,9 +170,19 @@ export default function SignInScreen(props: any): React.JSX.Element {
             <Image source={require('../../image/Gh.png')} style={styles.socialIcon} resizeMode='contain' />
           </View>
         </View>
-        <TouchableOpacity style={{ bottom: -180 }} onPress={handleLogin}>
-          <BtnColor name='Login' />
-        </TouchableOpacity>
+
+        <View style={{ alignItems: 'center' }}>
+          <TouchableOpacity style={{ bottom: -180, width: 339 }} onPress={handleLogin}>
+            <BtnColor name='Login' />
+          </TouchableOpacity>
+        </View>
+
+        {
+          isLoading && (
+            <LoadingScreen visible={isLoading} message='Login...' style={styles.indicatorContainer} />
+          )
+        }
+
       </SafeAreaView>
     </TouchableWithoutFeedback>
   );
@@ -188,7 +209,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     fontFamily: 'poppins',
     marginTop: 20,
-    // marginLeft: 15,
+    lineHeight: 45,
   },
   hand: {
     height: 42,
@@ -202,6 +223,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: '#6E6666',
     alignContent: 'center',
+    lineHeight: 24,
   },
 
   input: {
@@ -294,6 +316,9 @@ const styles = StyleSheet.create({
     height: 16,
     marginTop: 4.5,
     marginRight: 10,
+  },
+  indicatorContainer: {
+    position: 'absolute',
   },
 });
 

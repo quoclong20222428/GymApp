@@ -20,6 +20,7 @@ import AuthNavigator from './src/navigator/AuthNavigator';
 import store from './src/redux/store';
 import { SplashScreen } from './src/screens';
 import SignInScreen from './src/screens/author/SignInScreen';
+import SignUpScreen from './src/screens/author/SignUpScreen';
 
 function App(): React.JSX.Element {
   const [isShowSplash, setIsShowSplash] = useState<boolean>(true)
@@ -41,7 +42,7 @@ function App(): React.JSX.Element {
       
       {isShowSplash ? <SplashScreen /> :
         <AuthNavigator />
-        // <SignInScreen />
+        // <SignUpScreen />
       }
     </Provider>
   );
