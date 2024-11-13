@@ -42,8 +42,6 @@ function App(): React.JSX.Element {
       {isShowSplash ? <SplashScreen /> :
         <AuthNavigator />
         // <SignInScreen />
-        
-        
       }
     </Provider>
   );

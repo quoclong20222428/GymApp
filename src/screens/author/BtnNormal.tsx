@@ -4,9 +4,9 @@ import LinearGradient from 'react-native-linear-gradient';
 
 function BtnNormal({name}: {name:string}) {
     return (
-        <TouchableOpacity style={[styles.buttonContainer, styles.gradient]}>
+        <View style={[styles.buttonContainer, styles.gradient]}>
             <Text style={styles.buttonText}>{name}</Text>
-        </TouchableOpacity>
+        </View>
     );
 }
 

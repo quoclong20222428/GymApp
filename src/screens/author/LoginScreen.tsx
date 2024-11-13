@@ -6,10 +6,10 @@
  */
 
 // Define your available routes in this stack
-// type RootStackParamList = {
-//   SignInScreen: undefined;
-//   // Add other screens if needed
-// };
+type RootStackParamList = {
+  SignInScreen: undefined;
+  // Add other screens if needed
+};
 
 import React from 'react';
 import {
@@ -25,15 +25,16 @@ import {
 import BtnColor from './BtnColor';
 import BtnNormal from './BtnNormal';
 import BtnSocial from './BtnSocial';
+import { NavigationProp, useNavigation } from '@react-navigation/native';
 
-export default function LoginScreen(navigation: any): React.JSX.Element {
-  // const navigation = useNavigation<NavigationProp<RootStackParamList>>();
+export default function LoginScreen(): React.JSX.Element {
+  const navigation = useNavigation<NavigationProp<RootStackParamList>>();
 
   const handleSignIn = () => {
     navigation.navigate('SignInScreen')
   }
 
-  
+
   return (
     <SafeAreaView style={styles.container}>
       <View>
@@ -66,15 +67,13 @@ export default function LoginScreen(navigation: any): React.JSX.Element {
           <BtnSocial name={'Github'} iconName={'Github'} />
         </View>
 
-        <View style={styles.btnView}>
+        <TouchableOpacity style={styles.btnView}>
           <BtnColor name={'Sign Up'} />
-        </View>
+        </TouchableOpacity>
 
-        <View>
-          <TouchableOpacity style={styles.btnView} onPress={() => {handleSignIn}}>
-            <BtnNormal name={'Login'} />
-          </TouchableOpacity>
-        </View>
+        <TouchableOpacity style={styles.btnView} onPress={handleSignIn}>
+          <BtnNormal name={'Login'} />
+        </TouchableOpacity>
 
       </View>
       <Text style={[styles.h2, { position: 'absolute', bottom: -20 }]}>Privacy Policy  .  Terms for Service</Text>
@@ -87,6 +86,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
+    backgroundColor: '#FFFFFF',
   },
   btnView: {
     width: 339,

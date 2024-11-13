@@ -20,6 +20,8 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context';
 import BtnColor from './BtnColor';
 import { NavigationProp, useNavigation } from '@react-navigation/native';
+import { Icon } from '@expo/vector-icons/build/createIconSet';
+import { Ionicons } from '@expo/vector-icons';
 
 export default function SignInScreen(navigation: any): React.JSX.Element {
   const [email, setEmail] = useState<string>('')
@@ -76,22 +78,32 @@ export default function SignInScreen(navigation: any): React.JSX.Element {
           <View style={styles.input}>
             <Text style={styles.inputLabel}>Email</Text>
 
-            <TextInput value={email} style={styles.inputBox}
-              placeholder='Email'
-              keyboardType='email-address'
-              placeholderTextColor={'#B7ACAC'}
-              onChangeText={email => setEmail(email)} />
+
+            <View style={[styles.inputBox, { flexDirection: 'row', alignItems: 'center' }]}>
+              <Image source={require('../../image/Email.png')} style={styles.icon} />
+              <TextInput
+                value={email}
+                style={[{ flex: 1 }]}
+                placeholder="Email"
+                keyboardType="email-address"
+                placeholderTextColor="#B7ACAC"
+                onChangeText={email => setEmail(email)}
+              />
+            </View>
+
             <Text style={{ color: 'red', marginTop: 5 }}>{!checkMail ? 'Sai định dạng Email' : ''}</Text>
           </View>
 
           <View style={styles.input}>
             <Text style={styles.inputLabel}>Mật khẩu</Text>
-
-            <TextInput value={pass} style={styles.inputBox}
-              secureTextEntry
-              placeholder='Password'
-              placeholderTextColor={'#B7ACAC'}
-              onChangeText={pass => setPass(pass)} />
+            <View style={[styles.inputBox, { flexDirection: 'row', alignItems: 'center' }]}>
+              <Image source={require('../../image/lockPass.png')} style={styles.icon} />
+              <TextInput value={pass} style={[{ flex: 1 }]}
+                secureTextEntry
+                placeholder='Password'
+                placeholderTextColor={'#B7ACAC'}
+                onChangeText={pass => setPass(pass)} />
+            </View>
           </View>
           <View style={styles.handleExcept}>
             <View style={{ flexDirection: 'row' }}>
@@ -136,9 +148,9 @@ export default function SignInScreen(navigation: any): React.JSX.Element {
             <Image source={require('../../image/Gh.png')} style={styles.socialIcon} resizeMode='contain' />
           </View>
         </View>
-        <View style={{ bottom: -210 }}>
+        <TouchableOpacity style={{ bottom: -180 }} onPress={handleLogin}>
           <BtnColor name='Login' />
-        </View>
+        </TouchableOpacity>
       </SafeAreaView>
     </TouchableWithoutFeedback>
   );
@@ -148,6 +160,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingHorizontal: 16,
+    backgroundColor: '#FFFFFF',
   },
   backArrow: {
     width: 24,
@@ -193,7 +206,7 @@ const styles = StyleSheet.create({
     // borderWidth: 1,
     backgroundColor: '#F5F5F5',
     color: '#222',
-    paddingHorizontal: 16,
+    paddingHorizontal: 10,
     borderRadius: 12,
     fontWeight: '500',
     width: 350,
@@ -254,5 +267,10 @@ const styles = StyleSheet.create({
     width: 30,
     height: 30,
   },
+  icon: {
+    width: 24,
+    height: 24,
+    marginRight: 10,
+  }
 });
 

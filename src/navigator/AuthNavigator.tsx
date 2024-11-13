@@ -15,8 +15,15 @@ import OnboardScreen from '../screens/author/OnboardScreen';
 import LoginScreen from '../screens/author/LoginScreen';
 import SignInScreen from '../screens/author/SignInScreen';
 
+type RootStackParamList = {
+  OnboardScreen: undefined;
+  LoginScreen: undefined;
+  SignInScreen: undefined;
+};
+
+const Stack = createNativeStackNavigator<RootStackParamList>();
+
 function AuthNavigator(): React.JSX.Element {
-    const Stack = createNativeStackNavigator();
     return (
         <NavigationContainer>
           <Stack.Navigator

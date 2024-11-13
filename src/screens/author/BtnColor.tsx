@@ -1,10 +1,10 @@
 import React from 'react';
-import { Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { Text, TouchableOpacity, StyleSheet, View } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 
 function BtnColor({name}: {name:string}) {
     return (
-        <TouchableOpacity style={styles.buttonContainer}>
+        <View style={styles.buttonContainer}>
           <LinearGradient
             colors={['#92A3FD', '#9DCEFF']}
             start={{ x: 0, y: 0 }}
@@ -13,7 +13,7 @@ function BtnColor({name}: {name:string}) {
           >
             <Text style={styles.buttonText}>{name}</Text>
           </LinearGradient>
-        </TouchableOpacity>
+        </View>
       );
 }
 
