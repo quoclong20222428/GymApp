@@ -23,14 +23,16 @@ import { NavigationProp, useNavigation } from '@react-navigation/native';
 import { Icon } from '@expo/vector-icons/build/createIconSet';
 import { Ionicons } from '@expo/vector-icons';
 
-export default function SignInScreen(navigation: any): React.JSX.Element {
+export default function SignInScreen(props: any): React.JSX.Element {
   const [email, setEmail] = useState<string>('')
   const [pass, setPass] = useState<string>('')
 
   const [checkMail, setCheckMail] = useState<boolean>(true)
   const [checkPass, setCheckPass] = useState<boolean>(false)
+  const [isHidePass, setIsHidePass] = useState<boolean>(true)
   const [isRemembered, setIsRemembered] = useState<boolean>(false)
 
+  const { navigation } = props
   const checkFormat = () => {
     let data = {
       _email: email,
@@ -61,11 +63,12 @@ export default function SignInScreen(navigation: any): React.JSX.Element {
     }
   }
 
-
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <SafeAreaView style={styles.container}>
-        <Image source={require('../../image/backArrow.png')} style={styles.backArrow} />
+        <TouchableOpacity onPress={() => navigation.goBack()}>
+          <Image source={require('../../image/backArrow.png')} style={styles.backArrow} />
+        </TouchableOpacity>
         <View style={styles.title}>
           <Text style={styles.titleText}>Welcome Back!</Text>
           <Image source={require('../../image/wavingHand.png')} style={styles.hand} />
@@ -99,10 +102,18 @@ export default function SignInScreen(navigation: any): React.JSX.Element {
             <View style={[styles.inputBox, { flexDirection: 'row', alignItems: 'center' }]}>
               <Image source={require('../../image/lockPass.png')} style={styles.icon} />
               <TextInput value={pass} style={[{ flex: 1 }]}
-                secureTextEntry
+                secureTextEntry={isHidePass}
                 placeholder='Password'
                 placeholderTextColor={'#B7ACAC'}
                 onChangeText={pass => setPass(pass)} />
+              <TouchableOpacity onPress={() => setIsHidePass(!isHidePass)}>
+                {
+                  isHidePass ?
+                    <Image source={require('../../image/hidePass.png')} style={styles.hidePassIcon} resizeMode='contain' />
+                    :
+                    <Image source={require('../../image/Eye.png')} style={styles.unhidePassIcon} resizeMode='contain' />
+                }
+              </TouchableOpacity>
             </View>
           </View>
           <View style={styles.handleExcept}>
@@ -271,6 +282,18 @@ const styles = StyleSheet.create({
     width: 24,
     height: 24,
     marginRight: 10,
-  }
+  },
+  hidePassIcon: {
+    width: 13.89,
+    height: 7.75,
+    marginTop: 4.5,
+    marginRight: 10,
+  },
+  unhidePassIcon: {
+    width: 16,
+    height: 16,
+    marginTop: 4.5,
+    marginRight: 10,
+  },
 });
 
