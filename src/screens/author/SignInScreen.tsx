@@ -71,6 +71,9 @@ export default function SignInScreen(props: any): React.JSX.Element {
     if (checkFormat()) {
       toHomeScreen(true)
     }
+    if (!isLoading && checkFormat()) {
+      navigation.popTo('MainScreen')
+    }
   }
 
   return (
@@ -139,7 +142,7 @@ export default function SignInScreen(props: any): React.JSX.Element {
               <Text style={{ fontSize: 16, fontWeight: 'bold', fontFamily: 'poppins', marginLeft: 5 }}>Remember me</Text>
             </View>
 
-            <TouchableOpacity onPress={() => { }}
+            <TouchableOpacity onPress={() => {navigation.navigate('ForgotPassScreen')}}
               style={{ marginTop: 2, marginLeft: 120 }}>
               {/* <GradientText text='Forgot Password?' /> */}
               <Text>Forgot Password?</Text>

@@ -9,6 +9,7 @@
 type RootStackParamList = {
     SignInScreen: undefined;
     SignUpScreen: undefined;
+    MainScreen: undefined;
     // Add other screens if needed
 };
 
@@ -32,8 +33,9 @@ import BtnColor from './BtnColor';
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 
-export default function SignUpScreen(): React.JSX.Element {
-    const navigation = useNavigation<NavigationProp<RootStackParamList>>();
+export default function SignUpScreen(props: any): React.JSX.Element {
+    // const navigation = useNavigation<NavigationProp<RootStackParamList>>();
+    const {navigation} = props
     const [name, setName] = useState<string>('')
     const [email, setEmail] = useState<string>('')
     const [pass, setPass] = useState<string>('')
@@ -63,21 +65,24 @@ export default function SignUpScreen(): React.JSX.Element {
 
         return result
     }
+
     useEffect(() => {
         setTimeout(() => {
             setIsLoading(false)
         }, 10000)
     })
 
-    const toHomeScreen = (check: boolean) => {
-        // if (check) navigation.navigate('Home')
+    const waitSignUp = (check: boolean) => {
         if (check) setIsLoading(true)
     }
 
 
     const handleLogin = () => {
         if (checkFormat()) {
-            toHomeScreen(true)
+            waitSignUp(true)
+        }
+        if (!isLoading && checkFormat()) {
+            navigation.popTo('MainScreen')
         }
     }
 
