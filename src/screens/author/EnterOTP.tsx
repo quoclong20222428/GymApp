@@ -19,8 +19,6 @@ import {
     TouchableWithoutFeedback,
     View
 } from 'react-native';
-import BtnColor from './BtnColor';
-
 export default function EnterOTP(props: any): React.JSX.Element {
     const { navigation } = props
     const [countTime, setCountTime] = useState<number>(55)
@@ -29,19 +27,19 @@ export default function EnterOTP(props: any): React.JSX.Element {
     const inputs = useRef<any>([]);
 
     useEffect(() => {
-        if (countTime <= 0){
+        if (countTime <= 0) {
             setCountTime(0)
             return
         }
-    
+
         // Set up an interval to update the countdown every second
         const intervalId = setInterval(() => {
-          setCountTime((prevTime) => prevTime - 1);
+            setCountTime((prevTime) => prevTime - 1);
         }, 1000);
-    
+
         // Clear the interval when component unmounts or timeLeft reaches 0
         return () => clearInterval(intervalId);
-      }, [countTime]);
+    }, [countTime]);
 
     const handleChange = (text: any, index: any) => {
         let newOtp = [...otp];
@@ -63,7 +61,8 @@ export default function EnterOTP(props: any): React.JSX.Element {
         // Replace with OTP verification logic
         // console.log('OTP entered:', otpCode);
         // Trigger your OTP verification function here
-        // navigation.navigate('NewPass')
+        navigation.navigate('NewPass')
+        setCountTime(0)
     };
 
     return (

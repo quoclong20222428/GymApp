@@ -1,8 +1,7 @@
 import React from 'react';
-import { Text, TouchableOpacity, StyleSheet, View } from 'react-native';
-import LinearGradient from 'react-native-linear-gradient';
+import { StyleSheet, Text, View } from 'react-native';
 
-function BtnNormal({name}: {name:string}) {
+function BtnNormal({ name }: { name: string }) {
     return (
         <View style={[styles.buttonContainer, styles.gradient]}>
             <Text style={styles.buttonText}>{name}</Text>

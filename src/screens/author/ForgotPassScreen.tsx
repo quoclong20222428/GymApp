@@ -9,9 +9,7 @@ import React, { useState } from 'react';
 import {
     Image,
     Keyboard,
-    Platform,
     SafeAreaView,
-    StatusBar,
     StyleSheet,
     Text,
     TextInput,
@@ -19,7 +17,7 @@ import {
     TouchableWithoutFeedback,
     View
 } from 'react-native';
-import BtnColor from './BtnColor';
+import { BtnColor } from "../../components";
 
 export default function ForgotPassScreen(props: any): React.JSX.Element {
     const { navigation } = props
@@ -48,7 +46,7 @@ export default function ForgotPassScreen(props: any): React.JSX.Element {
     }
 
     const handleOTP = () => {
-        if(checkFormat()){
+        if (checkFormat()) {
             navigation.navigate('EnterOTP')
         }
     }
@@ -86,12 +84,12 @@ export default function ForgotPassScreen(props: any): React.JSX.Element {
                             />
                         </View>
 
-                        <Text style={{ color: 'red', marginTop: 5 }}>{!checkMail ? 'Sai định dạng Email' : ''}</Text>
+                        <Text style={{ color: 'red', marginTop: 5 }}>{!checkMail ? 'Wrong Email format' : ''}</Text>
                     </View>
                 </View>
 
                 <View style={{ alignItems: 'center' }}>
-                    <TouchableOpacity style={{ bottom: -420, width: 339 }} onPress={handleOTP}>
+                    <TouchableOpacity style={{ bottom: -470, width: 339 }} onPress={handleOTP}>
                         <BtnColor name='Send OTP code' />
                     </TouchableOpacity>
                 </View>
@@ -104,7 +102,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         paddingHorizontal: 16,
-        paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0,
+        // paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0,
         backgroundColor: '#FFFFFF',
     },
     backArrow: {

@@ -13,7 +13,6 @@ type RootStackParamList = {
     // Add other screens if needed
 };
 
-import { NavigationProp, useNavigation } from '@react-navigation/native';
 import React, { useEffect, useState } from 'react';
 import {
     Dimensions,
@@ -27,15 +26,12 @@ import {
     View
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { BtnColor } from "../../components";
 import LoadingScreen from '../LoadingScreen';
-import BtnColor from './BtnColor';
-
-const windowWidth = Dimensions.get('window').width;
-const windowHeight = Dimensions.get('window').height;
 
 export default function SignUpScreen(props: any): React.JSX.Element {
     // const navigation = useNavigation<NavigationProp<RootStackParamList>>();
-    const {navigation} = props
+    const { navigation } = props
     const [name, setName] = useState<string>('')
     const [email, setEmail] = useState<string>('')
     const [pass, setPass] = useState<string>('')

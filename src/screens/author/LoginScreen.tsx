@@ -24,9 +24,7 @@ import {
 
 
 import { NavigationProp, useNavigation } from '@react-navigation/native';
-import BtnColor from './BtnColor';
-import BtnNormal from './BtnNormal';
-import BtnSocial from './BtnSocial';
+import { BtnColor, BtnNormal, BtnSocial } from "../../components";
 
 export default function LoginScreen(): React.JSX.Element {
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();

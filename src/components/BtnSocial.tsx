@@ -1,5 +1,5 @@
 import React from 'react';
-import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Image, StyleSheet, Text, TouchableOpacity } from 'react-native';
 import getIconPath from './iconPath';
 
 
@@ -8,7 +8,7 @@ function BtnSocial({ name, iconName }: { name: string, iconName: string }) {
 
     return (
         <TouchableOpacity style={[styles.buttonContainer, styles.gradient]}>
-            {iconPath && <Image source={iconPath} style={styles.icon} resizeMode='contain'/>}
+            {iconPath && <Image source={iconPath} style={styles.icon} resizeMode='contain' />}
             <Text style={styles.buttonText}>Continue with {name}</Text>
         </TouchableOpacity>
     );

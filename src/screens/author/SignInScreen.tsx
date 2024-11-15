@@ -19,11 +19,8 @@ import {
   View
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { BtnColor } from "../../components";
 import LoadingScreen from '../LoadingScreen';
-import BtnColor from './BtnColor';
-
-const windowWidth = Dimensions.get('window').width;
-const windowHeight = Dimensions.get('window').height;
 
 export default function SignInScreen(props: any): React.JSX.Element {
   const [email, setEmail] = useState<string>('')
@@ -107,7 +104,7 @@ export default function SignInScreen(props: any): React.JSX.Element {
               />
             </View>
 
-            <Text style={{ color: 'red', marginTop: 5 }}>{!checkMail ? 'Sai định dạng Email' : ''}</Text>
+            <Text style={{ color: 'red', marginTop: 5 }}>{!checkMail ? 'Wrong Email format' : ''}</Text>
           </View>
 
           <View style={styles.input}>
@@ -142,7 +139,7 @@ export default function SignInScreen(props: any): React.JSX.Element {
               <Text style={{ fontSize: 16, fontWeight: 'bold', fontFamily: 'poppins', marginLeft: 5 }}>Remember me</Text>
             </View>
 
-            <TouchableOpacity onPress={() => {navigation.navigate('ForgotPassScreen')}}
+            <TouchableOpacity onPress={() => { navigation.navigate('ForgotPassScreen') }}
               style={{ marginTop: 2, marginLeft: 120 }}>
               {/* <GradientText text='Forgot Password?' /> */}
               <Text>Forgot Password?</Text>

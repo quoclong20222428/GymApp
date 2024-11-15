@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react';
-import { View, Text, ActivityIndicator, StyleSheet, Modal, Animated, Easing } from 'react-native';
+import { Animated, Easing, Modal, StyleSheet, Text, View } from 'react-native';
 
 export default function LoadingScreen({ visible, message, style }: { visible: boolean, message: string, style: any }) {
     const { _style } = style

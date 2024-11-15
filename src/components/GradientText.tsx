@@ -1,10 +1,8 @@
 import React from 'react';
-import { Text, StyleSheet, View } from 'react-native';
+import { StyleSheet, Text } from 'react-native';
 // import MaskedView from '@react-native-community/masked-view';
-import MaskedView from '@react-native-masked-view/masked-view';
 
 import LinearGradient from 'react-native-linear-gradient';
-import Svg, { Rect } from 'react-native-svg';
 
 
 
@@ -13,14 +11,14 @@ export default function GradientText({ text }: { text: string }): React.JSX.Elem
         // <MaskedView maskElement={ 
         // }>
 
-            <LinearGradient
-                colors={['#7891ED', '#9DCEFF']}
-                start={{ x: 0, y: 0 }}
-                end={{ x: 1, y: 0 }}
-            >
+        <LinearGradient
+            colors={['#7891ED', '#9DCEFF']}
+            start={{ x: 0, y: 0 }}
+            end={{ x: 1, y: 0 }}
+        >
             <Text style={styles.gradientText}>{text}</Text>
-            
-            </LinearGradient>
+
+        </LinearGradient>
 
         // </MaskedView>
     );
