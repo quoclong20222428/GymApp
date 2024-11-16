@@ -159,7 +159,7 @@ export default function SignUpScreen(props: any): React.JSX.Element {
                             navigation.goBack()
                             navigation.navigate('SignInScreen')
                         }}>
-                            <Text>Log In</Text>
+                            <Text style={{color: '#92A3FD'}}>Log In</Text>
                         </TouchableOpacity>
                     </View>
 

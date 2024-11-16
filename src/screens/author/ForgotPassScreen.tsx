@@ -9,7 +9,9 @@ import React, { useState } from 'react';
 import {
     Image,
     Keyboard,
+    Platform,
     SafeAreaView,
+    StatusBar,
     StyleSheet,
     Text,
     TextInput,
@@ -89,7 +91,7 @@ export default function ForgotPassScreen(props: any): React.JSX.Element {
                 </View>
 
                 <View style={{ alignItems: 'center' }}>
-                    <TouchableOpacity style={{ bottom: -470, width: 339 }} onPress={handleOTP}>
+                    <TouchableOpacity style={{ bottom: -420, width: 339 }} onPress={handleOTP}>
                         <BtnColor name='Send OTP code' />
                     </TouchableOpacity>
                 </View>
@@ -102,7 +104,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         paddingHorizontal: 16,
-        // paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0,
+        paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0,
         backgroundColor: '#FFFFFF',
     },
     backArrow: {

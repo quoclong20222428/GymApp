@@ -108,7 +108,7 @@ export default function SignInScreen(props: any): React.JSX.Element {
           </View>
 
           <View style={styles.input}>
-            <Text style={styles.inputLabel}>Mật khẩu</Text>
+            <Text style={styles.inputLabel}>Password</Text>
             <View style={[styles.inputBox, { flexDirection: 'row', alignItems: 'center' }]}>
               <Image source={require('../../image/lockPass.png')} style={styles.icon} />
               <TextInput value={pass} style={[{ flex: 1 }]}
@@ -142,7 +142,7 @@ export default function SignInScreen(props: any): React.JSX.Element {
             <TouchableOpacity onPress={() => { navigation.navigate('ForgotPassScreen') }}
               style={{ marginTop: 2, marginLeft: 120 }}>
               {/* <GradientText text='Forgot Password?' /> */}
-              <Text>Forgot Password?</Text>
+              <Text style={{color: '#92A3FD'}}>Forgot Password?</Text>
             </TouchableOpacity>
 
 
