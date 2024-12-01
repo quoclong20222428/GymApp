@@ -27,59 +27,99 @@ import {
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { BtnColor } from "../../components";
-import LoadingScreen from '../LoadingScreen';
+import LoadingScreen from '../modals/LoadingScreen';
+import authenticationAPI from '../../apis/authApi';
+import { Validate } from '../../utils/validate';
+
+const initValue = {
+    username: '',
+    email: '',
+    password: '',
+}
 
 export default function SignUpScreen(props: any): React.JSX.Element {
     // const navigation = useNavigation<NavigationProp<RootStackParamList>>();
     const { navigation } = props
-    const [name, setName] = useState<string>('')
-    const [email, setEmail] = useState<string>('')
-    const [pass, setPass] = useState<string>('')
+    const [reqEmail, setReqEmail] = useState(false)
+    const [values, setValues] = useState(initValue)
+    const [isDisable, setIsDisable] = useState(true);
 
-    const [checkMail, setCheckMail] = useState<boolean>(true)
-    const [checkPass, setCheckPass] = useState<boolean>(false)
     const [isHidePass, setIsHidePass] = useState<boolean>(true)
-    const [isRemembered, setIsRemembered] = useState<boolean>(false)
     const [isLoading, setIsLoading] = useState<boolean>(false)
 
-    const checkFormat = () => {
-        let data = {
-            _email: email,
-            _pass: pass,
-        }
-        let regexEmail = new RegExp(
-            /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-        )
-
-        let result = (regexEmail.test(data._email))
-
-        if (!result) {
-            setCheckMail(false)
-        } else {
-            setCheckMail(true)
-        }
-
-        return result
-    }
+    const [errorMessage, setErrorMessage] = useState<any>();
 
     useEffect(() => {
-        setTimeout(() => {
-            setIsLoading(false)
-        }, 10000)
-    })
+        if (
+            !errorMessage ||
+            (errorMessage &&
+                (errorMessage.email ||
+                    errorMessage.password
+                )) ||
+            !values.email ||
+            !values.password
+        ) {
+            setIsDisable(true);
+        } else {
+            setIsDisable(false);
+        }
+    }, [errorMessage, values]);
 
-    const waitSignUp = (check: boolean) => {
-        if (check) setIsLoading(true)
+    const formValidator = (key: string) => {
+        const data = { ...errorMessage };
+        let message = ``;
+
+        switch (key) {
+            case 'email':
+                if (!values.email) {
+                    message = `Email is required!!!`;
+                } else if (!Validate.email(values.email)) {
+                    message = 'Email is not invalid!!';
+                } else {
+                    message = '';
+                }
+
+                break;
+
+            case 'password':
+                message = !values.password ? `Password is required!!!` : '';
+                break;
+        }
+
+        data[`${key}`] = message;
+
+        setErrorMessage(data);
+    };
+
+    const handleChangeValue = (key: string, value: string) => {
+        const data: any = { ...values }
+
+        data[`${key}`] = value
+
+        setValues(data)
     }
+    const handleRegister = async () => {
+        if (!values.email) setReqEmail(true)
+        else {
+            setReqEmail(false)
+            if (!errorMessage) {
+                setIsLoading(true)
+                try {
+                    const res = await authenticationAPI.HandleAuthentication(
+                        '/register',
+                        values,
+                        'post'
+                    );
 
+                    setIsLoading(false);
+                    console.log(res)
 
-    const handleLogin = () => {
-        if (checkFormat()) {
-            waitSignUp(true)
+                } catch (error) {
+
+                }
+            }
         }
-        if (!isLoading && checkFormat()) {
-            navigation.popTo('MainScreen')
-        }
+
     }
 
     return (
@@ -105,12 +145,12 @@ export default function SignUpScreen(props: any): React.JSX.Element {
                         <View style={[styles.inputBox, { flexDirection: 'row', alignItems: 'center' }]}>
                             <Image source={require('../../image/user.png')} style={styles.icon} />
                             <TextInput
-                                value={name}
+                                value={values.username}
                                 style={[{ flex: 1 }]}
                                 placeholder="Name"
                                 keyboardType="ascii-capable"
                                 placeholderTextColor="#B7ACAC"
-                                onChangeText={name => setName(name)}
+                                onChangeText={val => handleChangeValue('username', val)}
                             />
                         </View>
                     </View>
@@ -122,27 +162,37 @@ export default function SignUpScreen(props: any): React.JSX.Element {
                         <View style={[styles.inputBox, { flexDirection: 'row', alignItems: 'center' }]}>
                             <Image source={require('../../image/Email.png')} style={styles.icon} />
                             <TextInput
-                                value={email}
+                                value={values.email}
                                 style={[{ flex: 1 }]}
                                 placeholder="Email"
                                 keyboardType="email-address"
                                 placeholderTextColor="#B7ACAC"
-                                onChangeText={email => setEmail(email)}
+                                autoCapitalize='none'
+                                onChangeText={(val) => {
+                                    handleChangeValue('email', val)
+                                    formValidator('email')
+                                }}
+                                onBlur={() => formValidator('email')}
                             />
                         </View>
 
-                        <Text style={{ color: 'red', marginTop: 5 }}>{!checkMail ? 'Sai định dạng Email' : ''}</Text>
+                        <Text style={{ color: 'red', marginTop: 5 }}>{reqEmail ? 'Email is required!' : (errorMessage ? 'Email is not invalid!' : '')}</Text>
                     </View>
 
                     <View style={styles.input}>
                         <Text style={styles.inputLabel}>Mật khẩu</Text>
                         <View style={[styles.inputBox, { flexDirection: 'row', alignItems: 'center' }]}>
                             <Image source={require('../../image/lockPass.png')} style={styles.icon} />
-                            <TextInput value={pass} style={[{ flex: 1 }]}
+                            <TextInput value={values.password} style={[{ flex: 1 }]}
                                 secureTextEntry={isHidePass}
                                 placeholder='Password'
                                 placeholderTextColor={'#B7ACAC'}
-                                onChangeText={pass => setPass(pass)} />
+                                onChangeText={(val) => {
+                                    handleChangeValue('password', val)
+                                    formValidator('password')
+                                }}
+                                onBlur={() => formValidator('password')}
+                            />
                             <TouchableOpacity onPress={() => setIsHidePass(!isHidePass)}>
                                 {
                                     isHidePass ?
@@ -156,10 +206,9 @@ export default function SignUpScreen(props: any): React.JSX.Element {
                     <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
                         <Text>Already have an account?</Text>
                         <TouchableOpacity style={{ marginLeft: 20 }} onPress={() => {
-                            navigation.goBack()
-                            navigation.navigate('SignInScreen')
+                            navigation.replace('SignInScreen')
                         }}>
-                            <Text style={{color: '#92A3FD'}}>Log In</Text>
+                            <Text style={{ color: '#92A3FD' }}>Log In</Text>
                         </TouchableOpacity>
                     </View>
 
@@ -187,7 +236,7 @@ export default function SignUpScreen(props: any): React.JSX.Element {
                 </View>
 
                 <View style={{ alignItems: 'center' }}>
-                    <TouchableOpacity style={{ bottom: -90, width: 339 }} onPress={handleLogin}>
+                    <TouchableOpacity style={{ bottom: -90, width: 339 }} onPress={handleRegister}>
                         <BtnColor name='Sign Up' />
                     </TouchableOpacity>
                 </View>

@@ -5,10 +5,11 @@
  * @format
  */
 
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import Checkbox from 'expo-checkbox';
 import React, { useEffect, useState } from 'react';
 import {
-  Dimensions,
+  Alert,
   Image,
   Keyboard,
   StyleSheet,
@@ -19,8 +20,12 @@ import {
   View
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { useDispatch } from 'react-redux';
+import authenticationAPI from '../../apis/authApi';
 import { BtnColor } from "../../components";
-import LoadingScreen from '../LoadingScreen';
+import { addAuth } from '../../redux/authReducer';
+import { Validate } from '../../utils/validate';
+import LoadingScreen from '../modals/LoadingScreen';
 
 export default function SignInScreen(props: any): React.JSX.Element {
   const [email, setEmail] = useState<string>('')
@@ -29,47 +34,76 @@ export default function SignInScreen(props: any): React.JSX.Element {
   const [checkMail, setCheckMail] = useState<boolean>(true)
   const [checkPass, setCheckPass] = useState<boolean>(false)
   const [isHidePass, setIsHidePass] = useState<boolean>(true)
-  const [isRemembered, setIsRemembered] = useState<boolean>(false)
+  const [isRemembered, setIsRemembered] = useState<boolean>(true)
+  const [isRememberMe, setIsRememberMe] = useState<boolean>(false)
   const [isLoading, setIsLoading] = useState<boolean>(false)
+  const dispatch = useDispatch();
+
 
   const { navigation } = props
-  const checkFormat = () => {
-    let data = {
-      _email: email,
-      _pass: pass,
-    }
-    let regexEmail = new RegExp(
-      /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-    )
 
-    let result = (regexEmail.test(data._email))
-
-    if (!result) {
-      setCheckMail(false)
-    } else {
-      setCheckMail(true)
-    }
-
-    return result
-  }
   useEffect(() => {
     setTimeout(() => {
       setIsLoading(false)
     }, 10000)
   })
 
-  const toHomeScreen = (check: boolean) => {
+  const Loading = (check: boolean) => {
     // if (check) navigation.navigate('Home')
     if (check) setIsLoading(true)
   }
 
 
-  const handleLogin = () => {
-    if (checkFormat()) {
-      toHomeScreen(true)
-    }
-    if (!isLoading && checkFormat()) {
-      navigation.popTo('MainScreen')
+  // const handleLogin = async () => {
+  //   if (checkFormat()) {
+  //     Loading(true)
+  //   }
+  //   if (!isLoading && checkFormat()) {
+
+  //     navigation.replace('SelectInfor')
+  //   }
+
+  //   try {
+  //     const res = await authentitationAPI.HandleAuthentitation('/hello')
+  //     console.log(res)
+  //   } catch (error) {
+  //     console.log(error)
+  //   }
+  // }
+
+  // const handleLogin = async () => {
+  //   const emailValidation = Validate.email(email);
+  //   setCheckMail(emailValidation)
+  //   if (emailValidation) {
+  //     Loading(true)
+  //     try {
+  //       const res = await authenticationAPI.HandleAuthentication(
+  //         '/login',
+  //         { email, pass },
+  //         'post',
+  //       );
+
+  //       dispatch(addAuth(res.data));
+
+  //       await AsyncStorage.setItem(
+  //         'auth',
+  //         isRemembered ? JSON.stringify(res.data) : email,
+  //       );
+  //     } catch (error) {
+  //       // console.log(error);
+  //       setIsLoading(false)
+  //       Alert.alert('Warning', 'Email or Password is incorrect!');
+  //     }
+  //   }
+  // };
+
+  const handleLogin = async () => {
+    // navigation.replace('SelectInfor')
+    try {
+      const res = await authenticationAPI.HandleAuthentication('/hello')
+      console.log(res)
+    } catch (error) {
+      console.log(error)
     }
   }
 
@@ -131,9 +165,9 @@ export default function SignInScreen(props: any): React.JSX.Element {
             <View style={{ flexDirection: 'row' }}>
               <Checkbox
                 style={[styles.checkRemember, { marginTop: 4.5 }]}
-                value={isRemembered}
-                onValueChange={setIsRemembered}
-                color={isRemembered ? '#0866FF' : undefined}
+                value={isRememberMe}
+                onValueChange={setIsRememberMe}
+                color={isRememberMe ? '#0866FF' : undefined}
               />
 
               <Text style={{ fontSize: 16, fontWeight: 'bold', fontFamily: 'poppins', marginLeft: 5 }}>Remember me</Text>
@@ -142,7 +176,7 @@ export default function SignInScreen(props: any): React.JSX.Element {
             <TouchableOpacity onPress={() => { navigation.navigate('ForgotPassScreen') }}
               style={{ marginTop: 2, marginLeft: 120 }}>
               {/* <GradientText text='Forgot Password?' /> */}
-              <Text style={{color: '#92A3FD'}}>Forgot Password?</Text>
+              <Text style={{ color: '#92A3FD' }}>Forgot Password?</Text>
             </TouchableOpacity>
 
 

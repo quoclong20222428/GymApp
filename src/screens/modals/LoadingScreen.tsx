@@ -26,9 +26,8 @@ export default function LoadingScreen({ visible, message, style }: { visible: bo
         <Modal transparent={true} visible={visible} animationType="fade" style={_style} statusBarTranslucent={true}>
             <View style={styles.overlay}>
                 <View style={styles.loadingContainer}>
-                    {/* <ActivityIndicator size="large" color="#4285F4" /> */}
                     <Animated.Image
-                        source={require('../image/loading.png')} // Thay bằng link hình ảnh của bạn
+                        source={require('../../image/loading.png')}
                         style={[styles.image, { transform: [{ rotate }] }]}
                     />
                     <Text style={styles.loadingText}>{message}</Text>

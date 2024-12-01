@@ -9,6 +9,7 @@ import SignInScreen from "./author/SignInScreen";
 import SignUpScreen from "./author/SignUpScreen";
 import HomeScreen from "./home/HomeScreen";
 import SplashScreen from "./SplashScreen";
+import { SelectInfor } from "./author/SelectInfor";
 
 
 export {
@@ -21,4 +22,5 @@ export {
     SignInScreen,
     SignUpScreen,
     AllSet,
+    SelectInfor,
 }

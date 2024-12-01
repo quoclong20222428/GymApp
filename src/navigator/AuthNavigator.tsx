@@ -21,7 +21,8 @@ import {
   ForgotPassScreen,
   EnterOTP,
   NewPass,
-  AllSet
+  AllSet,
+  SelectInfor,
 } from '../screens/index'
 
 type RootStackParamList = {
@@ -34,6 +35,7 @@ type RootStackParamList = {
   EnterOTP: undefined;
   NewPass: undefined;
   AllSet: undefined;
+  SelectInfor: undefined;
 };
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -54,6 +56,7 @@ function AuthNavigator(): React.JSX.Element {
         <Stack.Screen name='EnterOTP' component={EnterOTP} />
         <Stack.Screen name='NewPass' component={NewPass} />
         <Stack.Screen name='AllSet' component={AllSet} />
+        <Stack.Screen name='SelectInfor' component={SelectInfor} />
       </Stack.Navigator>
     </NavigationContainer>
   );

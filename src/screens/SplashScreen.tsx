@@ -20,7 +20,7 @@ function SplashScreen(): React.JSX.Element {
     useEffect(() => {
         const interval = setInterval(() => {
             setDots((prev) => (prev.length < 3 ? prev + '.' : ''))
-        }, 500); // Thời gian đổi dấu chấm là 500ms
+        }, 2500); // Thời gian đổi dấu chấm là 500ms
 
         return () => clearInterval(interval);
     }, []);

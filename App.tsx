@@ -7,6 +7,8 @@
 
 import React, { useEffect, useState } from 'react';
 import {
+  SafeAreaView,
+  ScrollView,
   StatusBar,
   StyleSheet
 } from 'react-native';
@@ -19,9 +21,13 @@ import { Provider } from 'react-redux';
 import AuthNavigator from './src/navigator/AuthNavigator';
 import store from './src/redux/store';
 import { SplashScreen } from './src/screens';
+import { ChooseFocusArea } from './src/screens/PersonalInformation';
 
 function App(): React.JSX.Element {
   const [isShowSplash, setIsShowSplash] = useState<boolean>(true)
+
+  const [accessToken, setAccessToken] = useState('')
+  
 
   useEffect(() => {
     setTimeout(() => {
@@ -40,7 +46,6 @@ function App(): React.JSX.Element {
 
       {isShowSplash ? <SplashScreen /> :
         <AuthNavigator />
-        // <SignUpScreen />
       }
     </Provider>
   );

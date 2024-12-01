@@ -18,7 +18,7 @@ import {
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { BtnColor } from "../../components";
-import LoadingScreen from '../LoadingScreen';
+import LoadingScreen from '../modals/LoadingScreen';
 
 export default function AllSet(props: any): React.JSX.Element {
     const { navigation } = props

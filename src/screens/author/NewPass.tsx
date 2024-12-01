@@ -18,7 +18,7 @@ import {
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { BtnColor } from "../../components";
-import LoadingScreen from '../LoadingScreen';
+import LoadingScreen from '../modals/LoadingScreen';
 
 export default function NewPass(props: any): React.JSX.Element {
     const [pass, setPass] = useState<string>('')
@@ -50,8 +50,7 @@ export default function NewPass(props: any): React.JSX.Element {
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
             <SafeAreaView style={styles.container}>
                 <TouchableOpacity onPress={() => {
-                    navigation.goBack()
-                    navigation.goBack()
+                    navigation.pop(2)
                     }}>
                     <Image source={require('../../image/backArrow.png')} style={styles.backArrow} />
                 </TouchableOpacity>
