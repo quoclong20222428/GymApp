@@ -13,9 +13,8 @@ type RootStackParamList = {
     // Add other screens if needed
 };
 
-import React, { useEffect, useState } from 'react';
+import React, { memo, useEffect, useState } from 'react';
 import {
-    Dimensions,
     Image,
     Keyboard,
     StyleSheet,
@@ -26,13 +25,13 @@ import {
     View
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { BtnColor } from "../../components";
-import LoadingScreen from '../modals/LoadingScreen';
 import authenticationAPI from '../../apis/authApi';
+import { BtnColor } from "../../components";
 import { Validate } from '../../utils/validate';
+import LoadingScreen from '../modals/LoadingScreen';
 
 const initValue = {
-    username: '',
+    name: '',
     email: '',
     password: '',
 }
@@ -41,6 +40,9 @@ export default function SignUpScreen(props: any): React.JSX.Element {
     // const navigation = useNavigation<NavigationProp<RootStackParamList>>();
     const { navigation } = props
     const [reqEmail, setReqEmail] = useState(false)
+    const [reqPass, setReqPass] = useState(false)
+    const [checkMail, setCheckMail] = useState(true)
+    const [checkPass, setCheckPass] = useState(true)
     const [values, setValues] = useState(initValue)
     const [isDisable, setIsDisable] = useState(true);
 
@@ -49,46 +51,46 @@ export default function SignUpScreen(props: any): React.JSX.Element {
 
     const [errorMessage, setErrorMessage] = useState<any>();
 
-    useEffect(() => {
-        if (
-            !errorMessage ||
-            (errorMessage &&
-                (errorMessage.email ||
-                    errorMessage.password
-                )) ||
-            !values.email ||
-            !values.password
-        ) {
-            setIsDisable(true);
-        } else {
-            setIsDisable(false);
-        }
-    }, [errorMessage, values]);
+    // useEffect(() => {
+    //     if (
+    //         !errorMessage ||
+    //         (errorMessage &&
+    //             (errorMessage.email ||
+    //                 errorMessage.password
+    //             )) ||
+    //         !values.email ||
+    //         !values.password
+    //     ) {
+    //         setIsDisable(true);
+    //     } else {
+    //         setIsDisable(false);
+    //     }
+    // }, [errorMessage]);
 
     const formValidator = (key: string) => {
-        const data = { ...errorMessage };
-        let message = ``;
-
         switch (key) {
             case 'email':
                 if (!values.email) {
-                    message = `Email is required!!!`;
+                    // message = 'Email is required!'
                 } else if (!Validate.email(values.email)) {
-                    message = 'Email is not invalid!!';
+                    // message = 'Email is not invalid!'
+                    setCheckMail(false)
                 } else {
-                    message = '';
+                    setCheckMail(true)
                 }
 
                 break;
 
             case 'password':
-                message = !values.password ? `Password is required!!!` : '';
+                if (!values.password) {
+                    // message = 'Password is required!'
+                } else if (!Validate.Password(values.password)) {
+                    // message = 'Password at least 6 characters!'
+                    setCheckPass(false)
+                }
+                else setCheckPass(true)
                 break;
         }
-
-        data[`${key}`] = message;
-
-        setErrorMessage(data);
     };
 
     const handleChangeValue = (key: string, value: string) => {
@@ -100,9 +102,11 @@ export default function SignUpScreen(props: any): React.JSX.Element {
     }
     const handleRegister = async () => {
         if (!values.email) setReqEmail(true)
+        else if (checkMail && !values.password) setReqPass(true)
         else {
             setReqEmail(false)
-            if (!errorMessage) {
+            setReqPass(false)
+            if (checkMail && checkPass) {
                 setIsLoading(true)
                 try {
                     const res = await authenticationAPI.HandleAuthentication(
@@ -145,12 +149,12 @@ export default function SignUpScreen(props: any): React.JSX.Element {
                         <View style={[styles.inputBox, { flexDirection: 'row', alignItems: 'center' }]}>
                             <Image source={require('../../image/user.png')} style={styles.icon} />
                             <TextInput
-                                value={values.username}
+                                value={values.name}
                                 style={[{ flex: 1 }]}
                                 placeholder="Name"
                                 keyboardType="ascii-capable"
                                 placeholderTextColor="#B7ACAC"
-                                onChangeText={val => handleChangeValue('username', val)}
+                                onChangeText={val => handleChangeValue('name', val)}
                             />
                         </View>
                     </View>
@@ -170,13 +174,13 @@ export default function SignUpScreen(props: any): React.JSX.Element {
                                 autoCapitalize='none'
                                 onChangeText={(val) => {
                                     handleChangeValue('email', val)
-                                    formValidator('email')
+                                    // formValidator('email')
                                 }}
-                                onBlur={() => formValidator('email')}
+                                onEndEditing={() => formValidator('email')}
                             />
                         </View>
 
-                        <Text style={{ color: 'red', marginTop: 5 }}>{reqEmail ? 'Email is required!' : (errorMessage ? 'Email is not invalid!' : '')}</Text>
+                        <Text style={{ color: 'red', marginTop: 5 }}>{reqEmail ? 'Email is required!' : (checkMail ? '' : 'Email is not invalid!')}</Text>
                     </View>
 
                     <View style={styles.input}>
@@ -189,9 +193,9 @@ export default function SignUpScreen(props: any): React.JSX.Element {
                                 placeholderTextColor={'#B7ACAC'}
                                 onChangeText={(val) => {
                                     handleChangeValue('password', val)
-                                    formValidator('password')
+                                    // formValidator('password')
                                 }}
-                                onBlur={() => formValidator('password')}
+                                onEndEditing={() => formValidator('password')}
                             />
                             <TouchableOpacity onPress={() => setIsHidePass(!isHidePass)}>
                                 {
@@ -202,6 +206,7 @@ export default function SignUpScreen(props: any): React.JSX.Element {
                                 }
                             </TouchableOpacity>
                         </View>
+                        <Text style={{ color: 'red', marginTop: 5 }}>{reqPass ? 'Password is required!' : (checkPass ? '' : 'Password at least 6 characters!')}</Text>
                     </View>
                     <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
                         <Text>Already have an account?</Text>
@@ -236,7 +241,7 @@ export default function SignUpScreen(props: any): React.JSX.Element {
                 </View>
 
                 <View style={{ alignItems: 'center' }}>
-                    <TouchableOpacity style={{ bottom: -90, width: 339 }} onPress={handleRegister}>
+                    <TouchableOpacity style={{ bottom: -70, width: 339 }} onPress={handleRegister}>
                         <BtnColor name='Sign Up' />
                     </TouchableOpacity>
                 </View>
