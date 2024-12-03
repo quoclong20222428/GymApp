@@ -39,33 +39,15 @@ const initValue = {
 export default function SignUpScreen(props: any): React.JSX.Element {
     // const navigation = useNavigation<NavigationProp<RootStackParamList>>();
     const { navigation } = props
+    const [reqName, setReqName] = useState(false)
     const [reqEmail, setReqEmail] = useState(false)
     const [reqPass, setReqPass] = useState(false)
     const [checkMail, setCheckMail] = useState(true)
     const [checkPass, setCheckPass] = useState(true)
     const [values, setValues] = useState(initValue)
-    const [isDisable, setIsDisable] = useState(true);
 
     const [isHidePass, setIsHidePass] = useState<boolean>(true)
     const [isLoading, setIsLoading] = useState<boolean>(false)
-
-    const [errorMessage, setErrorMessage] = useState<any>();
-
-    // useEffect(() => {
-    //     if (
-    //         !errorMessage ||
-    //         (errorMessage &&
-    //             (errorMessage.email ||
-    //                 errorMessage.password
-    //             )) ||
-    //         !values.email ||
-    //         !values.password
-    //     ) {
-    //         setIsDisable(true);
-    //     } else {
-    //         setIsDisable(false);
-    //     }
-    // }, [errorMessage]);
 
     const formValidator = (key: string) => {
         switch (key) {
@@ -101,12 +83,11 @@ export default function SignUpScreen(props: any): React.JSX.Element {
         setValues(data)
     }
     const handleRegister = async () => {
-        if (!values.email) setReqEmail(true)
-        else if (checkMail && !values.password) setReqPass(true)
-        else {
-            setReqEmail(false)
-            setReqPass(false)
-            if (checkMail && checkPass) {
+        if (values.name && values.email && values.password) {
+            // setReqName(false)
+            // setReqEmail(false)
+            // setReqPass(false)
+            if (!reqName && checkMail && checkPass) {
                 setIsLoading(true)
                 try {
                     const res = await authenticationAPI.HandleAuthentication(
@@ -122,6 +103,14 @@ export default function SignUpScreen(props: any): React.JSX.Element {
 
                 }
             }
+        }
+        else{
+            if(!values.name) setReqName(true)
+                else setReqName(false)
+            if(!values.email) setReqEmail(true)
+                else setReqEmail(false)
+            if(!values.password) setReqPass(true)
+                else setReqPass(false)
         }
 
     }
@@ -140,7 +129,7 @@ export default function SignUpScreen(props: any): React.JSX.Element {
                 <Text style={styles.h1}>Sign up now to get access to personalized workouts and achieve your fitness goals.</Text>
 
 
-                <View style={{ paddingTop: 18, paddingLeft: 17 }}>
+                <View style={{ paddingTop: 8, paddingLeft: 17 }}>
 
                     <View style={styles.input}>
                         <Text style={styles.inputLabel}>Name</Text>
@@ -157,9 +146,10 @@ export default function SignUpScreen(props: any): React.JSX.Element {
                                 onChangeText={val => handleChangeValue('name', val)}
                             />
                         </View>
+                        <Text style={{ color: 'red', marginTop: 5 }}>{reqName ? 'Name is required!' : ''}</Text>
                     </View>
 
-                    <View style={[styles.input, { marginTop: 20 }]}>
+                    <View style={[styles.input]}>
                         <Text style={styles.inputLabel}>Email</Text>
 
 
