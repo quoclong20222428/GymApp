@@ -42,7 +42,7 @@ const Stack = createNativeStackNavigator<RootStackParamList>();
 
 function AuthNavigator(): React.JSX.Element {
   return (
-    <NavigationContainer>
+    // <NavigationContainer>
       <Stack.Navigator
         screenOptions={{
           headerShown: false,
@@ -58,7 +58,7 @@ function AuthNavigator(): React.JSX.Element {
         <Stack.Screen name='AllSet' component={AllSet} />
         <Stack.Screen name='SelectInfor' component={SelectInfor} />
       </Stack.Navigator>
-    </NavigationContainer>
+    // </NavigationContainer>
   );
 }
 

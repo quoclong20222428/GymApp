@@ -22,12 +22,14 @@ import AuthNavigator from './src/navigator/AuthNavigator';
 import store from './src/redux/store';
 import { SplashScreen } from './src/screens';
 import { ChooseFocusArea } from './src/screens/PersonalInformation';
+import { NavigationContainer } from '@react-navigation/native';
+import AppRouters from './src/navigator/AppRouters';
 
 function App(): React.JSX.Element {
   const [isShowSplash, setIsShowSplash] = useState<boolean>(true)
 
   const [accessToken, setAccessToken] = useState('')
-  
+
 
   useEffect(() => {
     setTimeout(() => {
@@ -42,11 +44,13 @@ function App(): React.JSX.Element {
         barStyle="dark-content"
         backgroundColor="transparent"
         translucent />
+      <NavigationContainer>
+        <AppRouters />
+      </NavigationContainer>
 
-
-      {isShowSplash ? <SplashScreen /> :
+      {/* {isShowSplash ? <SplashScreen /> :
         <AuthNavigator />
-      }
+      } */}
     </Provider>
   );
 }

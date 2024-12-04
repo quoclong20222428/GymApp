@@ -29,10 +29,11 @@ import LoadingScreen from '../modals/LoadingScreen';
 
 export default function SignInScreen(props: any): React.JSX.Element {
   const [email, setEmail] = useState<string>('')
-  const [pass, setPass] = useState<string>('')
+  const [password, setPassword] = useState<string>('')
 
+  const [reqEmail, setReqEmail] = useState(false)
+  const [reqPass, setReqPass] = useState(false)
   const [checkMail, setCheckMail] = useState<boolean>(true)
-  const [checkPass, setCheckPass] = useState<boolean>(false)
   const [isHidePass, setIsHidePass] = useState<boolean>(true)
   const [isRemembered, setIsRemembered] = useState<boolean>(true)
   const [isRememberMe, setIsRememberMe] = useState<boolean>(false)
@@ -49,63 +50,42 @@ export default function SignInScreen(props: any): React.JSX.Element {
   })
 
   const Loading = (check: boolean) => {
-    // if (check) navigation.navigate('Home')
     if (check) setIsLoading(true)
   }
 
-
-  // const handleLogin = async () => {
-  //   if (checkFormat()) {
-  //     Loading(true)
-  //   }
-  //   if (!isLoading && checkFormat()) {
-
-  //     navigation.replace('SelectInfor')
-  //   }
-
-  //   try {
-  //     const res = await authentitationAPI.HandleAuthentitation('/hello')
-  //     console.log(res)
-  //   } catch (error) {
-  //     console.log(error)
-  //   }
-  // }
-
-  // const handleLogin = async () => {
-  //   const emailValidation = Validate.email(email);
-  //   setCheckMail(emailValidation)
-  //   if (emailValidation) {
-  //     Loading(true)
-  //     try {
-  //       const res = await authenticationAPI.HandleAuthentication(
-  //         '/login',
-  //         { email, pass },
-  //         'post',
-  //       );
-
-  //       dispatch(addAuth(res.data));
-
-  //       await AsyncStorage.setItem(
-  //         'auth',
-  //         isRemembered ? JSON.stringify(res.data) : email,
-  //       );
-  //     } catch (error) {
-  //       // console.log(error);
-  //       setIsLoading(false)
-  //       Alert.alert('Warning', 'Email or Password is incorrect!');
-  //     }
-  //   }
-  // };
-
   const handleLogin = async () => {
-    // navigation.replace('SelectInfor')
-    try {
-      const res = await authenticationAPI.HandleAuthentication('/hello')
-      console.log(res)
-    } catch (error) {
-      console.log(error)
+    if (email && password) {
+      const emailValidation = Validate.email(email)
+      setCheckMail(emailValidation)
+      if (emailValidation) {
+        Loading(true)
+        try {
+          const res = await authenticationAPI.HandleAuthentication(
+            '/login',
+            { email, password },
+            'post',
+          );
+          console.log(res)
+          dispatch(addAuth(res.data));
+
+          await AsyncStorage.setItem(
+            'auth',
+            isRemembered ? JSON.stringify(res.data) : email,
+          );
+        } catch (error) {
+          // console.log(error);
+          setIsLoading(false)
+          Alert.alert('Warning', 'Email or Password is incorrect!');
+        }
+      }
     }
-  }
+    else {
+      if (!email) setReqEmail(true)
+      else setReqEmail(false)
+      if (!password) setReqPass(true)
+      else setReqPass(false)
+    }
+  };
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
@@ -134,22 +114,23 @@ export default function SignInScreen(props: any): React.JSX.Element {
                 placeholder="Email"
                 keyboardType="email-address"
                 placeholderTextColor="#B7ACAC"
+                autoCapitalize='none'
                 onChangeText={email => setEmail(email)}
               />
             </View>
 
-            <Text style={{ color: 'red', marginTop: 5 }}>{!checkMail ? 'Wrong Email format' : ''}</Text>
+            <Text style={{ color: 'red', marginTop: 5 }}>{reqEmail ? 'Email is required!' : (checkMail ? '' : 'Email is not invalid!')}</Text>
           </View>
 
           <View style={styles.input}>
             <Text style={styles.inputLabel}>Password</Text>
             <View style={[styles.inputBox, { flexDirection: 'row', alignItems: 'center' }]}>
               <Image source={require('../../image/lockPass.png')} style={styles.icon} />
-              <TextInput value={pass} style={[{ flex: 1 }]}
+              <TextInput value={password} style={[{ flex: 1 }]}
                 secureTextEntry={isHidePass}
                 placeholder='Password'
                 placeholderTextColor={'#B7ACAC'}
-                onChangeText={pass => setPass(pass)} />
+                onChangeText={pass => setPassword(pass)} />
               <TouchableOpacity onPress={() => setIsHidePass(!isHidePass)}>
                 {
                   isHidePass ?
@@ -159,6 +140,7 @@ export default function SignInScreen(props: any): React.JSX.Element {
                 }
               </TouchableOpacity>
             </View>
+            <Text style={{ color: 'red', marginTop: 5 }}>{reqPass ? 'Password is required!' : ''}</Text>
           </View>
 
           <View style={styles.handleExcept}>
@@ -206,7 +188,7 @@ export default function SignInScreen(props: any): React.JSX.Element {
         </View>
 
         <View style={{ alignItems: 'center' }}>
-          <TouchableOpacity style={{ bottom: -180, width: 339 }} onPress={handleLogin}>
+          <TouchableOpacity style={{ bottom: -160, width: 339 }} onPress={handleLogin}>
             <BtnColor name='Login' />
           </TouchableOpacity>
         </View>

@@ -25,9 +25,49 @@ import {
 
 import { NavigationProp, useNavigation } from '@react-navigation/native';
 import { BtnColor, BtnNormal, BtnSocial } from "../../components";
+import authenticationAPI from '../../apis/authApi';
+import { useDispatch } from 'react-redux';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { addAuth } from '../../redux/authReducer';
+import { GoogleSignin } from '@react-native-google-signin/google-signin';
+
+GoogleSignin.configure({
+  webClientId: '120715624266-15cdmcgvm51sai78leu47os2h93hjhgq.apps.googleusercontent.com',
+  // iosClientId: 
+})
 
 export default function LoginScreen(): React.JSX.Element {
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
+
+  const api = `/google-signin`;
+  const dispatch = useDispatch();
+
+  const handleLoginWithGoogle = async () => {
+    await GoogleSignin.hasPlayServices({
+      showPlayServicesUpdateDialog: true,
+    });
+
+    try {
+      await GoogleSignin.hasPlayServices();
+      const userInfo = await GoogleSignin.signIn();
+      
+      const user = userInfo.data?.user
+
+      console.log(user)
+
+      const res: any = await authenticationAPI.HandleAuthentication(
+        api,
+        user,
+        'post',
+      );
+console.log(res)
+      // dispatch(addAuth(res.data));
+
+      // await AsyncStorage.setItem('auth', JSON.stringify(res.data));
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const handleSignIn = () => {
     navigation.navigate('SignInScreen')
@@ -39,6 +79,9 @@ export default function LoginScreen(): React.JSX.Element {
 
   return (
     <SafeAreaView style={styles.container}>
+      {/* <TouchableOpacity style={{marginTop: 20}} onPress={async () => await GoogleSignin.signOut()}>
+        <Text>LogOut GG</Text>
+      </TouchableOpacity> */}
       <View>
         <Image source={require('../../image/FitnestX.png')} style={styles.logo} />
       </View>
@@ -53,21 +96,21 @@ export default function LoginScreen(): React.JSX.Element {
         </Text>
       </View>
       <View>
-        <View style={styles.btnView}>
+        <TouchableOpacity style={styles.btnView}>
           <BtnSocial name={'Facebook'} iconName={'Facebook'} />
-        </View>
+        </TouchableOpacity>
 
-        <View style={styles.btnView}>
+        <TouchableOpacity style={styles.btnView} onPress={handleLoginWithGoogle}>
           <BtnSocial name={'Google'} iconName={'Google'} />
-        </View>
+        </TouchableOpacity>
 
-        <View style={styles.btnView}>
+        <TouchableOpacity style={styles.btnView}>
           <BtnSocial name={'Apple'} iconName={'Apple'} />
-        </View>
+        </TouchableOpacity>
 
-        <View style={styles.btnView}>
+        <TouchableOpacity style={styles.btnView}>
           <BtnSocial name={'Github'} iconName={'Github'} />
-        </View>
+        </TouchableOpacity>
 
         <TouchableOpacity style={styles.btnView} onPress={handleSignUp}>
           <BtnColor name={'Sign Up'} />
