@@ -20,7 +20,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { Provider } from 'react-redux';
 import AuthNavigator from './src/navigator/AuthNavigator';
 import store from './src/redux/store';
-import { SplashScreen } from './src/screens';
+import { EnterOTP, SplashScreen } from './src/screens';
 import { ChooseFocusArea } from './src/screens/PersonalInformation';
 import { NavigationContainer } from '@react-navigation/native';
 import AppRouters from './src/navigator/AppRouters';

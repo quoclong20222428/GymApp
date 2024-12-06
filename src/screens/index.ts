@@ -13,14 +13,16 @@ import { SelectInfor } from "./author/SelectInfor";
 
 
 export {
-    HomeScreen, LoginScreen, SplashScreen,
+    AllSet,
     EnterOTP,
     ForgotPassScreen,
+    LoginScreen, 
     MainScreen,
     NewPass,
     OnboardScreen,
+    SelectInfor,
     SignInScreen,
     SignUpScreen,
-    AllSet,
-    SelectInfor,
+    HomeScreen, 
+    SplashScreen,
 }

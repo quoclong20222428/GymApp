@@ -20,36 +20,67 @@ import {
     View
 } from 'react-native';
 import { BtnColor } from "../../components";
+import { Validate } from '../../utils/validate';
+import authenticationAPI from '../../apis/authApi';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import LoadingScreen from '../modals/LoadingScreen';
+
+const initValue = {
+    name: '',
+    email: '',
+    password: '',
+}
 
 export default function ForgotPassScreen(props: any): React.JSX.Element {
     const { navigation } = props
-    const [email, setEmail] = useState<string>('')
 
+    const [reqEmail, setReqEmail] = useState(false)
     const [checkMail, setCheckMail] = useState<boolean>(true)
+    const [values, setValues] = useState(initValue)
+    const [isLoading, setIsLoading] = useState(false)
 
+    const handleChangeValue = (key: string, value: string) => {
+        const data: any = { ...values }
 
-    const checkFormat = () => {
-        let data = {
-            _email: email,
-        }
-        let regexEmail = new RegExp(
-            /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-        )
+        data[`${key}`] = value
 
-        let result = (regexEmail.test(data._email))
-
-        if (!result) {
-            setCheckMail(false)
-        } else {
-            setCheckMail(true)
-        }
-
-        return result
+        setValues(data)
     }
 
-    const handleOTP = () => {
+    const checkFormat = () => {
+        if (!values.email) setReqEmail(true)
+        else {
+            setReqEmail(false)
+            setCheckMail(Validate.email(values.email))
+        }
+        if(!reqEmail && checkMail) return true
+        else return false
+    }
+
+    const handleOTP = async () => {
         if (checkFormat()) {
-            navigation.navigate('EnterOTP')
+            setIsLoading(true)
+                const api = `/verification`
+                try {
+                    const res = await authenticationAPI.HandleAuthentication(
+                        api,
+                        {email: values.email},
+                        'post'
+                    );
+
+                    setIsLoading(false);
+                    console.log(res)
+                    console.log('This is forgot password!')
+
+                    navigation.navigate('EnterOTP', {
+                        code: res.data.code,
+                        isForgotPassword: 1,
+                        ...values,
+                      });
+
+                } catch (error) {
+
+                }
         }
     }
 
@@ -77,16 +108,17 @@ export default function ForgotPassScreen(props: any): React.JSX.Element {
                         <View style={[styles.inputBox, { flexDirection: 'row', alignItems: 'center' }]}>
                             <Image source={require('../../image/Email.png')} style={styles.icon} />
                             <TextInput
-                                value={email}
+                                value={values.email}
                                 style={[{ flex: 1 }]}
                                 placeholder="Email"
                                 keyboardType="email-address"
                                 placeholderTextColor="#B7ACAC"
-                                onChangeText={email => setEmail(email)}
+                                autoCapitalize='none'
+                                onChangeText={email => handleChangeValue('email', email)}
                             />
                         </View>
 
-                        <Text style={{ color: 'red', marginTop: 5 }}>{!checkMail ? 'Wrong Email format' : ''}</Text>
+                        <Text style={{ color: 'red', marginTop: 5 }}>{reqEmail ? 'Email is required!' : (checkMail ? '' : 'Email is not invalid!')}</Text>
                     </View>
                 </View>
 
@@ -95,6 +127,13 @@ export default function ForgotPassScreen(props: any): React.JSX.Element {
                         <BtnColor name='Send OTP code' />
                     </TouchableOpacity>
                 </View>
+
+                {
+                    isLoading && (
+                        <LoadingScreen visible={isLoading} message='Sending OTP Code...' style={styles.indicatorContainer} />
+                    )
+                }
+
             </SafeAreaView>
         </TouchableWithoutFeedback>
     );
@@ -177,6 +216,9 @@ const styles = StyleSheet.create({
         width: 24,
         height: 24,
         marginRight: 10,
+    },
+    indicatorContainer: {
+        position: 'absolute',
     },
 });
 

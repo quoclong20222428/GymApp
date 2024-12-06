@@ -84,33 +84,40 @@ export default function SignUpScreen(props: any): React.JSX.Element {
     }
     const handleRegister = async () => {
         if (values.name && values.email && values.password) {
-            // setReqName(false)
-            // setReqEmail(false)
-            // setReqPass(false)
+            setReqName(false)
+            setReqEmail(false)
+            setReqPass(false)
             if (!reqName && checkMail && checkPass) {
                 setIsLoading(true)
+                const api = `/verification`
                 try {
                     const res = await authenticationAPI.HandleAuthentication(
-                        '/register',
-                        values,
+                        api,
+                        { email: values.email },
                         'post'
                     );
 
                     setIsLoading(false);
                     console.log(res)
+                    console.log('This is SignUp')
 
+                    navigation.navigate('EnterOTP', {
+                        code: res.data.code,
+                        isForgotPassword: 0,
+                        ...values,
+                    });
                 } catch (error) {
 
                 }
             }
         }
-        else{
-            if(!values.name) setReqName(true)
-                else setReqName(false)
-            if(!values.email) setReqEmail(true)
-                else setReqEmail(false)
-            if(!values.password) setReqPass(true)
-                else setReqPass(false)
+        else {
+            if (!values.name) setReqName(true)
+            else setReqName(false)
+            if (!values.email) setReqEmail(true)
+            else setReqEmail(false)
+            if (!values.password) setReqPass(true)
+            else setReqPass(false)
         }
 
     }
