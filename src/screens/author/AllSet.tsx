@@ -34,13 +34,10 @@ export default function AllSet(props: any): React.JSX.Element {
 
             <View style={{ alignItems: 'center' }}>
                 <TouchableOpacity style={{ bottom: -300, width: 339 }} onPress={() => {
-                    navigation.goBack()
-                    navigation.goBack()
-                    navigation.goBack()
-                    navigation.goBack()
+                    navigation.pop(4)
                 }
                 }>
-                    <BtnColor name='Save New Password' />
+                    <BtnColor name='Done' />
                 </TouchableOpacity>
             </View>
         </SafeAreaView>

@@ -7,6 +7,7 @@
 
 import React, { useEffect, useState } from 'react';
 import {
+    Alert,
     Image,
     Keyboard,
     StyleSheet,
@@ -19,8 +20,9 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { BtnColor } from "../../components";
 import LoadingScreen from '../modals/LoadingScreen';
+import authenticationAPI from '../../apis/authApi';
 
-export default function NewPass(props: any): React.JSX.Element {
+export default function NewPass({ navigation, route }: any): React.JSX.Element {
     const [pass, setPass] = useState<string>('')
     const [newPass, setNewPass] = useState<string>('')
 
@@ -28,7 +30,8 @@ export default function NewPass(props: any): React.JSX.Element {
     const [isHidePass, setIsHidePass] = useState<boolean>(true)
     const [isLoading, setIsLoading] = useState<boolean>(false)
 
-    const { navigation } = props
+    // const { navigation } = props
+    const { email } = route.params;
 
     useEffect(() => {
         setTimeout(() => {
@@ -36,9 +39,28 @@ export default function NewPass(props: any): React.JSX.Element {
         }, 10000)
     })
 
-    const handleLogin = () => {
+    const handleChangPass = async () => {
         if (pass === newPass) {
             setIsLoading(true)
+
+            const api = `/forgotPassword`;
+            console.log('This is email:')
+            console.log(email)
+            try {
+                const res: any = await authenticationAPI.HandleAuthentication(
+                    api,
+                    {
+                        email, password: newPass
+                    },
+                    'post',
+                );
+
+                console.log(res);
+                setIsLoading(false);
+            } catch (error) {
+                setIsLoading(false);
+                console.log(`Can not create new password api forgot password, ${error}`);
+            }
             if (!isLoading) {
                 navigation.navigate('AllSet')
             }
@@ -51,7 +73,7 @@ export default function NewPass(props: any): React.JSX.Element {
             <SafeAreaView style={styles.container}>
                 <TouchableOpacity onPress={() => {
                     navigation.pop(2)
-                    }}>
+                }}>
                     <Image source={require('../../image/backArrow.png')} style={styles.backArrow} />
                 </TouchableOpacity>
                 <View style={styles.title}>
@@ -107,7 +129,7 @@ export default function NewPass(props: any): React.JSX.Element {
                 </View>
 
                 <View style={{ alignItems: 'center' }}>
-                    <TouchableOpacity style={{ bottom: -300, width: 339 }} onPress={handleLogin}>
+                    <TouchableOpacity style={{ bottom: -300, width: 339 }} onPress={handleChangPass}>
                         <BtnColor name='Save New Password' />
                     </TouchableOpacity>
                 </View>

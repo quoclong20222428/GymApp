@@ -102,7 +102,7 @@ export default function EnterOTP({ navigation, route }: any): React.JSX.Element 
                 setIsLoading(true)
                 if (isForgotPassword) {
                     setIsLoading(false)
-                    navigation.navigate('NewPass')
+                    navigation.navigate('NewPass', {email})
                 }
                 else {
                     const api = `/register`;
